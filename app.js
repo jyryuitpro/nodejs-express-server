@@ -17,13 +17,25 @@ app.use((req, res, next) => {
 //     throw new Error('에러가 났어요');
 // });
 
+// app.use((req, res, next) => {
+//     console.log('1 요청에 실행하고 싶어요');
+//     next();
+// }, (req, res, next) => {
+//     try {
+//         console.log(에러발생);
+//     } catch (error) {
+        // next에 인수가 있으면 바로 에러 처리 미들웨어로 넘어간다.
+        // next(error);
+    // }
+// });
+
 // app.use('/about', (req, res, next) => {
 //     console.log('모든 요청에 실행하고 싶어요');
 //     next();
 // });
 
 // 2) 라우터
-app.get('/', (req, res) => {
+// app.get('/', (req, res) => {
     // res.sendFile('./index.html');
     // C:\Users\jyryu\WebstormProjects\nodejs-express-server
     // console.log(__dirname);
@@ -33,8 +45,23 @@ app.get('/', (req, res) => {
     // res.send('안녕하세요.'); // writeHead, end
     // res.json({hello: 'jyryuitpro'});
 
-    res.setHeader('Content-Type', 'text/html');
-    res.status(200).send('안녕하세요.');
+    // res.setHeader('Content-Type', 'text/html');
+    // res.json({ hello: 'jyryuitpro' });
+    // res.status(200).send('안녕하세요.');
+    // res.render();
+// });
+
+app.get('/', (req, res, next) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+    // 다음 라우터로 넘어갑니다.
+    next('route');
+}, (req, res) => {
+    // if를 이용하여 next를 분기 처리할 수 있습니다.
+    console.log('실행되나요? 실행안됩니다.');
+});
+
+app.get('/', (req, res) => {
+    console.log('실행되지롱');
 });
 
 app.post('/', (req, res) => {
